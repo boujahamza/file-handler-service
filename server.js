@@ -1,3 +1,5 @@
+require("dotenv").config();
+require("./config/database").connect();
 const express = require("express");
 const multer = require('multer');
 const cors = require("cors");
@@ -24,13 +26,27 @@ app.get("/", (req, res) => {
     console.log("recieved request");
 });
 
-app.post("/", upload.single("data"), (req, res, next) => {
-    
+app.get("/user/:id", (req, res) => {
+    console.log("recieved request");
+});
+
+const File = require("./model/file");
+
+app.post("/", upload.single("data"), async (req, res, next) => {
+
+    const user = JSON.parse(req.headers["user"]);
+
+    const file = await File.create({
+        name: req.file.filename,
+        user_id: user.user_id,
+        username: user.username
+    })
+
     console.log("received file");
-    console.log(JSON.parse(req.headers["user"]).user_id);
+    console.log(req.headers["user"]);
 
     res.status(200).send();
-})
+});
 
 app.listen(port, () => {
     console.log(`listening on port ${port}`);
