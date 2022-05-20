@@ -26,7 +26,7 @@ app.get("/", (req, res) => {
     console.log("recieved request");
 });
 
-app.get("/user/:id", (req, res) => {
+app.get("/file/:userId", (req, res) => {
     console.log("recieved request");
 });
 
